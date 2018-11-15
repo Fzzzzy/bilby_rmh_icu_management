@@ -26,7 +26,7 @@ Database Settings:
 1. Create a user "swen90014" on localhost with password"swen90014" (Grant all administrator privileges to this user.)
 2  Create database using SQL commands:    
 
-## You can take use of the SQL.txt (on the root dictionary) to build your local database 
+**You can take use of the SQL.txt (on the root catalogue) to build your local database **
 
 Useful Links:
 
