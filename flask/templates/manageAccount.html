@@ -1,0 +1,235 @@
+{% extends 'layout.html' %}
+{% block body %}
+<body>
+	<div class="container-fluid">
+		<!--the main list-->
+		<div class="container main-ul">
+				
+				<form class="form-inline" id = "button">
+					<!--search the Username-->
+					<div class="col-sm-8">
+						<input class="form-control mr-sm-2 btn-sm" type="search" placeholder="Username or email" aria-label="Search">
+						<button class="btn btn-success my-2 my-sm-0 btn-sm" type="submit">Search</button>
+					</div>
+					<!--buttons ADD-->
+					<div>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModel">Add</button>
+							
+					</div>
+				</form>
+				<br>
+		<!--table-->
+			<ul class="list-group">
+				
+				<li class="list-group-item list-group-item-light">
+					<div class="row">
+						<div class="col">
+							<span>Email</span>
+						</div>
+						<div class="col">
+							<span>Firstname</span>
+						</div>
+						<div class="col">
+							<span>Lastname</span>
+						</div>
+						<div class="col">
+							<span>Type</span>
+						</div>
+						<div class="col">
+							<span></span>
+						</div>
+						<div class="col">
+							<span></span>
+						</div>
+						<div class="col">
+							<span></span>
+						</div>
+					</div>
+				</li>
+				{% include 'includes/_messages.html' %}		
+			{% if staffs != 'empty'  %}
+				{% for staff in staffs %}
+				<li class="list-group-item">
+					<div class="row">
+						<div class="col">
+							<span> {{staff.email}} </span>
+						</div>
+						<div class="col">
+							<span> {{staff.firstname}} </span>
+						</div>
+						<div class="col">
+								<span> {{staff.lastname}} </span>
+						</div>
+						<div class="col">
+							<span> {{staff.staffType}} </span>
+					</div>
+					
+					
+					
+					{% if staff.staffType != 'super' %}
+					<div class="col">
+							<form id="resetPassForm" class="form" action="{{ url_for('resetPassAccount', email=staff.email) }}" method="post">
+									<button type="submit" class="btn btn-primary" value="">Reset Pin</button>
+							</form>      
+						</div>
+					<div class="col">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit{{staff.id}}">Edit</button>
+					</div>
+					<div class="col">		
+						 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete{{staff.id}}">Delete</button>	
+					</div>
+					{% else %}
+					<div class="col"></div>
+					<div class="col"></div>
+					<div class="col"></div>
+					{% endif %}	
+				</div>
+				</li>
+				{% endfor %}
+			{% endif %}		
+		</div>
+    </div>
+    
+    <div class="modal fade" id="addModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Add new user</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+						{% from "includes/_formhelper.html" import render_field%}
+              <form id="addAccountForm" class="form" action="{{ url_for('addAccount') }}" method="post">                         
+							<!--account-->
+							<div class="form-group row">
+								<label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">email</label>
+									<div class="col-sm-10">
+										{{render_field(addAccountForm.email, class_="form-control", type="text")}}
+									</div>
+							</div>
+							
+							<div class="form-group row">
+								<label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">firstmane</label>
+									<div class="col-sm-10">
+										{{render_field(addAccountForm.firstname, class_="form-control", type="text")}}
+									</div>
+							</div>
+							
+							<div class="form-group row">
+								<label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">lastname</label>
+									<div class="col-sm-10">
+										{{render_field(addAccountForm.lastname, class_="form-control", type="text")}}
+									</div>
+							</div>
+														
+							<div class="form-group row">
+								<label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">staffType</label>
+									<div class="col-sm-10">
+										{{render_field(addAccountForm.staffType, class_="form-control", type="text")}}
+									</div>
+							</div>
+							
+							<!--password-->
+							<div class="form-group row">
+								<label for="inputPassword3" class="col-sm-2 col-form-label">password</label>
+									<div class="col-sm-10">
+										{{render_field(addAccountForm.password, class_="form-control", type="password")}}
+									</div>
+							</div>
+							
+							<div class="modal-footer">
+								<!--  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+									<button type="submit" class="btn btn-primary">ADD</button>
+								</div>
+						</form>
+                     
+              </div>
+            </div>
+          </div>
+		</div>
+		
+		{% for staff in staffs %}
+		<div class="modal fade" id="edit{{staff.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">{{staff.email}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+						{% from "includes/_formhelper.html" import render_field%}
+              <form id="editAccountForm" class="form" action="{{ url_for('editAccount') }}" method="post">                         
+							<!--account-->
+							<div class="form-group row" hidden="hidden">
+									<label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">email</label>
+										<div class="col-sm-10" >
+											{{render_field(editAccountForm.email, class_="form-control", type="text",value=staff.email)}}
+										</div>
+							</div>		
+
+							<div class="form-group row">
+								<label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">firstmane</label>
+									<div class="col-sm-10">
+										{{render_field(editAccountForm.firstname, class_="form-control", type="text",value=staff.firstname)}}
+									</div>
+							</div>
+							
+							<div class="form-group row">
+								<label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">lastname</label>
+									<div class="col-sm-10">
+										{{render_field(editAccountForm.lastname, class_="form-control", type="text",value=staff.lastname)}}
+									</div>
+							</div>
+														
+							<div class="form-group row">
+								<label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">staffType</label>
+									<div class="col-sm-10">
+										{{render_field(editAccountForm.staffType, class_="form-control", type="text",value=staff.staffType)}}
+									</div>
+							</div>
+							<div class="form-group row">
+								<label for="inputPassword3" class="col-sm-2 col-form-label">password</label>
+									<div class="col-sm-10">
+										{{render_field(editAccountForm.password, class_="form-control", type="password")}}
+									</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+									<button type="submit" class="btn btn-primary">EDIT</button>
+								</div>
+						</form>
+                     
+              </div>
+            </div>
+          </div>
+		</div>
+		<div class="modal fade" id="delete{{staff.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalCenterTitle">Delete?</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+						
+						<form id="AccountForm" class="form" action="{{ url_for('deleteAccount', email=staff.email ) }}" method="post">  
+							<button type="submit" class="btn btn-danger">YES</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}	
+
+		<!-- Modal -->
+
+</body>
+{% endblock %}

@@ -1,0 +1,20 @@
+/*
+	Some specific things to be added..
+*/
+
+div.main-ul {
+	position: fixed;
+	top: 50%;
+	left: 50%; 
+	margin: -201px 0 0 -400px; 
+	width: 800px;
+}
+
+
+#button{
+    position: fixed;
+	top: 44%;
+	left: 50%; 
+	margin: -201px 0 0 -400px; 
+	width: 900px;
+}

@@ -1,0 +1,22 @@
+
+.form-control-borderless {
+    border: none;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+#patienttable{
+    position: fixed;
+	top: 57%;
+	left: 40%; 
+	margin: -201px 0 0 -400px; 
+	width: 900px;
+}
+#buttonadd{
+    	left:40%; 
+    top: 17%;
+
+}

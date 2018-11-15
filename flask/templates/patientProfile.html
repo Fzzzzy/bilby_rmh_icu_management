@@ -1,0 +1,542 @@
+{% extends 'layout.html' %} {% block body %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script> 
+{% include 'includes/_messages.html' %} 
+{% from "includes/_formhelper.html" import render_field %}
+<div class="container">
+  <br/>
+  <form id="SearchPatient" class="form" action="{{ url_for('searchPatient')}}" method="post">
+    <div class="row justify-content-center">
+      <div class="card-body row no-gutters align-items-center">
+        {{render_field(searchURN.urn, class_="form-control form-control-lg form-control-borderless", type="text", placeholder="Search patient URN", style="border:1px")}}
+
+      </div>
+      <div>
+        <br/>
+        <button class="btn btn-lg btn-success" type="submit">Search</button>
+  </form>
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addPatient">ADD Patient</button>
+  </div>
+  </div>
+</div>
+<!--<button onclick="myFunction()">Try it</button>-->
+<div>
+  <br>
+  <div class="container shadow p-3 mb-5 bg-info rounded" id="boxes" style="text-align:left">
+  <center>
+    
+    <div style="width: 1100px;">
+      <table class="table">
+        <thead>
+          <tr>
+            {% if patient != None %}
+            <th scope="col">
+              <img src="https://www.thermh.org.au/sites/default/files/favicon.png" width="40" height="40" alt="A picture">
+            </th>
+            <th scope="col">URN:</th>
+            
+            <th scope="col">Firstname:</th>
+            
+            <th scope="col">Lastname:</th>
+            
+            <th scope="col">Date of Birth:</th>
+          
+
+          </tr>
+        </thead>
+        <tbody>
+            <th scope="col"></th>
+            <th scope="col">{{patient.urn}}</th>
+            
+            <th scope="col">{{patient.firstname}}</th>
+            
+            <th scope="col">{{patient.lastname}}</th>
+            
+            <th scope="col">{{patient.dateOfBirth}}</th>
+        </tbody>
+      </table>
+    </div>
+  </center>
+  
+      <!--<button class="btn btn-primary" type="submit" id="addbutton">Add Admission</button>-->
+      <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#addAdmission">ADD Admission</button>
+      <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#editPatient">EDIT</button>
+      <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#deletePatient">DELETE</button>
+    </div>
+    {% else %}
+            
+    {% endif %}
+  {% if admissions != None %}
+  {% for admission in admissions[::-1] %}
+  <div class="container shadow p-3 mb-5 bg-info rounded" id="boxes">
+    <div class="row">
+      <div class="col-2">
+        <h4>Admission</h4>
+        <br>
+        <br>
+      </div>
+      <div class="col-10 row">
+        <!-- Table1 -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th colspan="1" scope="col">Date From</th>
+              <th colspan="1" scope="col">Date To</th>
+              <th scope="col"></th>
+              <th scope="col">MMP</th>
+              <th scope="col">MC Discharge </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="col">{{admission.dateFrom}}</th>
+              <th scope="col">{{admission.dateTo}}</th>
+              <td>
+              </td>
+              <td>
+                  <form id="mmpForm" class="" action="{{ url_for('mmp', admissionID=admission.admissionID)}}" method="post">  
+                    <button type="" class="btn btn-secondary">MMP</button>  
+                  </form>
+              </td>
+              <td>
+                <form id="mmpForm" class="" action="{{ url_for('mcd', admissionID=admission.admissionID)}}" method="post">  
+                  <button type="" class="btn btn-secondary">MCD</button>  
+                </form>
+              </td>
+            </tr>
+
+
+          </tbody>
+        </table>
+
+        {% if ICUadmissions != None  %}
+        {% for ICUadmission in ICUadmissions[::-1] %}
+        {% if ICUadmission.admissionID == admission.admissionID %}
+        <div class="shadow p-3 mb-5 bg-light rounded" id="ICUS">
+          <div class="row">
+            <div class="col-2">
+              <h4>ICU Admission</h4>
+            </div>
+
+            <div class="col-10 row">
+              <!-- Table2 -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th colspan="1" scope="col">Date From</th>
+
+                    <th colspan="1" scope="col">Date To</th>
+
+                    
+                  </tr>
+
+                </thead>
+                <tbody>
+                  <tr>
+                      <th scope="col">{{ICUadmission.dateFrom}}</th>
+                      <th scope="col">{{ICUadmission.dateTo}}</th>
+                  </tr>    
+                </tbody>
+              </table>
+              <table class="table">
+                  <thead>
+                    <th colspan="1" scope="col">Medication Charts</th>
+                    <th colspan="1" scope="col">Date From</th>
+
+                    <th colspan="1" scope="col">Date To</th>
+
+                  </thead>
+                  <tbody>
+                  <tr>
+                    {% if mcICU != None  %}
+                    {% for mcICU in mcICU %}
+                    {% if mcICU.icuAdmissionID == ICUadmission.icuAdmissionID %}
+                    <tr>
+                    <td>
+                    <form id="mcICUForm" class="" action="{{ url_for('mcICU', mcID=mcICU.mcID)}}" method="post">  
+                       <button type="" class="btn btn-secondary">{{mcICU.type}}</button>  
+                    </form>
+                    </td>
+                    <td>
+                        <b>{{mcICU.dateFrom}}</b>
+                    </td>
+                    <td>
+                        <b>{{mcICU.dateTo}}</b>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteICUMC{{mcICU.mcID}}">DELETE</button>
+                    </td>
+                  </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </tr>
+                </tbody>
+              </table> 
+            </div>
+
+          </div>
+          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addMCICU{{ICUadmission.icuAdmissionID}}">ADD MC</button>
+          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#editICUAdmission{{ICUadmission.icuAdmissionID}}">EDIT</button>
+          <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#deleteICUAdmission{{ICUadmission.icuAdmissionID}}">DELETE</button>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+      </div>
+
+    </div>
+    
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#addICUAdmission{{admission.admissionID}}">ADD ICU Admission</button>
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#editAdmission{{admission.admissionID}}">EDIT</button>
+        <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#deleteAdmission{{admission.admissionID}}">DELETE</button>
+      
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+
+<div class="modal fade" id="addAdmission" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalCenterTitle">Add Admission</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form role="form" id="addAdmission" action="{{ url_for('addAdmission')}}" method="post">
+          <div class="form-group row">
+            <label for="email" class="control-label col-md-2">Date From:</label>
+            <div class="col-sm-10">
+              {{render_field(admissionForm.dateFrom, class_="form-control", type="datetime-local")}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="email" class="control-label col-md-2">DateTo:</label>
+            <div class="col-sm-10">
+              {{render_field(admissionForm.dateTo, class_="form-control", type="datetime-local")}}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success" id="btnSaveIt">SAVE</button>
+            <button type="button" class="btn btn-default" id="btnCloseIt" data-dismiss="modal">CLOSE</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="deletePatient" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Are you sure to Delete?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+          <form id="deleteMcRecordForm" class="form" action="{{ url_for('deletePatient', urn=session['urn']) }}" method="post">  
+              <button type="submit" class="btn btn-danger">YES</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+{% if admissions != None %}
+{% for admission in admissions[::-1] %}
+<div class="modal fade" id="addICUAdmission{{admission.admissionID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="exampleModalCenterTitle">Add new ICU Admission</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </div>
+        <div class="modal-body">
+          <form role="form" id="addICUAdmission" action="{{ url_for('addICUAdmission',admissionID = admission.admissionID)}}" method="post">
+            <div class="form-group row">
+              <label for="email" class="control-label col-md-2">Date From:</label>
+              <div class="col-sm-10">
+                {{render_field(admissionForm.dateFrom, class_="form-control", type="datetime-local")}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="email" class="control-label col-md-2">DateTo:</label>
+              <div class="col-sm-10">
+                {{render_field(admissionForm.dateTo, class_="form-control", type="datetime-local")}}
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success" id="btnSaveIt">SAVE</button>
+              <button type="button" class="btn btn-default" id="btnCloseIt" data-dismiss="modal">CLOSE</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="editAdmission{{admission.admissionID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="exampleModalCenterTitle">Edit Admission</h2>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </div>
+          <div class="modal-body">
+            <form role="form" id="editAdmission" action="{{ url_for('editAdmission',admissionID=admission.admissionID)}}" method="post">
+              <div class="form-group row">
+                <label for="email" class="control-label col-md-2">Date From:</label>
+                <div class="col-sm-10">
+                  {{render_field(admissionForm.dateFrom, class_="form-control", type="datetime-local")}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="email" class="control-label col-md-2">DateTo:</label>
+                <div class="col-sm-10">
+                  {{render_field(admissionForm.dateTo, class_="form-control", type="datetime-local")}}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btnSaveIt">SAVE</button>
+                <button type="button" class="btn btn-default" id="btnCloseIt" data-dismiss="modal">CLOSE</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="modal fade" id="deleteAdmission{{admission.admissionID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Delete?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+            <form id="deleteMcRecordForm" class="form" action="{{ url_for('deleteAdmission', admissionID=admission.admissionID ) }}" method="post">  
+                <button type="submit" class="btn btn-danger">YES</button>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+  {% if ICUadmissions != None  %}
+  {% for ICUadmission in ICUadmissions[::-1] %}
+  {% if ICUadmission.admissionID == admission.admissionID %}
+  <div class="modal fade" id="addMCICU{{ICUadmission.icuAdmissionID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="exampleModalCenterTitle">Add ICU MC</h2>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </div>
+          <div class="modal-body">
+            <form role="form" id="addICUAdmission" action="{{ url_for('addMCICU',icuAdmissionID = ICUadmission.icuAdmissionID)}}" method="post">
+              <div class="form-group row">
+                <label for="email" class="control-label col-md-2">Date From:</label>  
+                <div class="col-sm-10">
+                  {{render_field(mcForm.dateFrom, class_="form-control", type="datetime-local")}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="email" class="control-label col-md-2">DateTo:</label>
+                <div class="col-sm-10">
+                  {{render_field(mcForm.dateTo, class_="form-control", type="datetime-local")}}
+                </div>
+              </div>
+              <div class="form-group row">
+                  <label for="email" class="control-label col-md-2">Label:</label>
+                  <div class="col-sm-10">
+                    {{render_field(mcForm.type, class_="form-control", type="text")}}
+                  </div>
+                </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btnSaveIt">SAVE</button>
+                <button type="button" class="btn btn-default" id="btnCloseIt" data-dismiss="modal">CLOSE</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="editICUAdmission{{ICUadmission.icuAdmissionID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="exampleModalCenterTitle">Edit ICU Admission</h2>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </div>
+            <div class="modal-body">
+              <form role="form" id="editICUAdmission" action="{{ url_for('editICUAdmission',icuAdmissionID = ICUadmission.icuAdmissionID)}}" method="post">
+                <div class="form-group row">
+                  <label for="email" class="control-label col-md-2">Date From:</label>
+                  <div class="col-sm-10">
+                    {{render_field(admissionForm.dateFrom, class_="form-control", type="datetime-local")}}
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="control-label col-md-2">DateTo:</label>
+                  <div class="col-sm-10">
+                    {{render_field(admissionForm.dateTo, class_="form-control", type="datetime-local")}}
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success" id="btnSaveIt">SAVE</button>
+                  <button type="button" class="btn btn-default" id="btnCloseIt" data-dismiss="modal">CLOSE</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="modal fade" id="deleteICUAdmission{{ICUadmission.icuAdmissionID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Delete?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+              <form id="deleteMcRecordForm" class="form" action="{{ url_for('deleteICUAdmission', icuAdmissionID = ICUadmission.icuAdmissionID)}}" method="post">  
+                  <button type="submit" class="btn btn-danger">YES</button>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+    {% if mcICU != None  %}
+    {% for mcICU in mcICU %}
+    {% if mcICU.icuAdmissionID == ICUadmission.icuAdmissionID %}
+    <div class="modal fade" id="deleteICUMC{{mcICU.mcID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Delete?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+              <form id="deleteMcRecordForm" class="form" action="{{ url_for('deleteMCICU', mcID=mcICU.mcID ) }}" method="post">  
+                  <button type="submit" class="btn btn-danger">YES</button>
+              </form> 
+            </div>
+          </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+{% endfor %}
+{% endif %}
+
+<div class="modal fade" id="addPatient" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalCenterTitle">Add new patient</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form class="form" id="addPatient" action="{{ url_for('addPatient') }}" method="post">
+          <div class="form-group row">
+            <label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">URN</label>
+            <div class="col-sm-10">
+              {{render_field(patientForm.urn, class_="form-control", type="text")}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">First Name</label>
+            <div class="col-sm-10">
+              {{render_field(patientForm.firstname, class_="form-control", type="text")}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">Last Name</label>
+            <div class="col-sm-10">
+              {{render_field(patientForm.lastname, class_="form-control", type="text")}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">Date of Birth</label>
+            <div class="col-sm-10">
+              {{render_field(patientForm.dateOfBirth, class_="form-control", type="date")}}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success" id="btnSaveIt">SAVE</button>
+            <button type="button" class="btn btn-default" id="btnCloseIt" data-dismiss="modal">CLOSE</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editPatient" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="exampleModalCenterTitle">Edit patient</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </div>
+        <div class="modal-body">
+          <form class="form" id="editPatient" action="{{ url_for('editPatient',urn=session['urn']) }}" method="post">
+            <div class="form-group row">
+              <label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">URN</label>
+              <div class="col-sm-10">
+                {{render_field(patientForm.urn, class_="form-control", type="text",value=patient.urn)}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">First Name</label>
+              <div class="col-sm-10">
+                {{render_field(patientForm.firstname, class_="form-control", type="text",value=patient.firstname)}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">Last Name</label>
+              <div class="col-sm-10">
+                {{render_field(patientForm.lastname, class_="form-control", type="text",value=patient.lastname)}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">Date of Birth</label>
+              <div class="col-sm-10">
+                {{render_field(patientForm.dateOfBirth, class_="form-control", type="date",value=patient.dateOfBirth)}}
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success" id="btnSaveIt">SAVE</button>
+              <button type="button" class="btn btn-default" id="btnCloseIt" data-dismiss="modal">CLOSE</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

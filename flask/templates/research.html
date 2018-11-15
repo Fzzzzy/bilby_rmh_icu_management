@@ -1,0 +1,411 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container-fluid">
+	<!--HomePage of Research-->
+	<div class="container shadow p-3 mb-5 bg-white rounded" id="research-main-panel">
+		<div class="row">
+			<div class="col-3">
+				<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+					<a class="nav-link active" id="icu-discharge-drugs-tab" data-toggle="pill" href="#icu-discharge-drugs" role="tab" aria-controls="icu-discharge-drugs" aria-selected="false"> ICU Discharge Drugs </a>
+					
+					<a class="nav-link" id="top-drug-list-tab" data-toggle="pill" href="#top-drug-list" role="tab" aria-controls="top-drug-list" aria-selected="true"> Top Drug List </a>
+					
+					<a class="nav-link" id="patient-drug-detail-tab" data-toggle="pill" href="#patient-drug-detail" role="tab" aria-controls="patient-drug-detail" aria-selected="true"> Patient Drug Detail </a>
+					
+					<a class="nav-link" id="export-all-data-tab" data-toggle="pill" href="#export-all-data" role="tab" aria-controls="export-all-data-tab" aria-selected="true"> Export All Data </a>
+				</div>
+			</div>
+			<div class="col-9">
+				<div class="tab-content" id="v-pills-tabContent">
+					<div id="icu-discharge-drugs" class="tab-pane fade show active" role="tabpanel" aria-labelledby="v-pills-home-tab">
+						<div class="row">
+							<div class="col-1"></div>
+							<div class="input-group mb-3 date-div col-10">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="pick-start-date">Date From</span>
+								</div>
+								<input type="date" class="form-control" aria-label="pick-start-date-input" aria-describedby="pick-start-date">
+							</div>
+							<div class="col-1"></div>
+						</div>
+						<div class="row">
+							<div class="col-1"></div>
+							<div class="input-group mb-3 date-div col-10">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="pick-end-date">To</span>
+								</div>
+								<input type="date" class="form-control" aria-label="pick-end-date-input" aria-describedby="pick-end-date">
+							</div>
+							<div class="col-1"></div>
+						</div>
+						<div class="row">
+							<div class="col-1"></div>
+							<div class="input-group mb-3 date-div col-10">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="medication-rela">Medication</span>
+								</div>
+								<input type="text" aria-label="medication-rela-input" aria-describedby="medication-rela" class="form-control col-5" placeholder="Medication One" id="medication-one">
+								<select class="custom-select col-2" id="and-or">
+									<option value="none" selected>...</option>
+									<option value="and">And</option>
+									<option value="or">Or</option>
+								</select>
+								<input type="text" aria-label="medication-rela-input" aria-describedby="medication-rela" class="form-control col-5" placeholder="Medication Two" id="medication-two">
+							</div>
+							<div class="col-1"></div>
+						</div>
+						<div class="row">
+							<div class="col-1"></div>
+							<div class="col-10">
+								<button type="button" class="btn btn-primary" id="icu-search-button"> Search </button> 
+							</div>
+							<div class="col-1"></div>
+						</div>
+					</div>
+
+					<div class="tab-pane hide" id="icu-discharge-drugs-result"> 
+						<h5>Total: 3</h5>
+						<ul class="list-group">
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-4">
+										<span> <b>Patient Name</b> </span>
+									</div>
+									<div class="col-sm-4">
+										<span> <b>URN</b> </span>
+									</div>
+									<div class="col-sm-4">
+										<span> <b>ICU Discharge Date</b> </span>
+									</div>
+								</form>
+							</li>
+
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-4">
+										<span> Peter </span>
+									</div>
+									<div class="col-sm-4">
+										<span> P189273f </span>
+									</div>
+									<div class="col-sm-4">
+										<span> 02/01/2018 </span>
+									</div>
+								</form>
+							</li>
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-4">
+										<span> Tom </span>
+									</div>
+									<div class="col-sm-4">
+										<span> P230073b </span>
+									</div>
+									<div class="col-sm-4">
+										<span> 02/08/2017 </span>
+									</div>
+								</form>
+							</li>
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-4">
+										<span> Jack </span>
+									</div>
+									<div class="col-sm-4">
+										<span> P111933o </span>
+									</div>
+									<div class="col-sm-4">
+										<span> 09/10/2017 </span>
+									</div>
+								</form>
+							</li>
+						</ul>	
+						<div class="row">
+							<div class="col-7"></div>
+							<div class="col-5">
+								<button type="button" class="btn btn-primary" id="icu-result-export"> Export </button> 
+								<button type="button" class="btn btn-primary" id="icu-result-back-button"> Back </button> 
+							</div>
+						</div>		
+					</div>
+
+					<div class="tab-pane fade" id="top-drug-list" role="tabpanel" aria-labelledby="v-pills-home-tab">
+						<div class="row">
+							<div class="input-group mb-3 date-div col-5">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="pick-start-date">Date From</span>
+								</div>
+								<input type="date" class="form-control" aria-label="pick-start-date-input" aria-describedby="pick-start-date">
+							</div>
+							<div class="input-group mb-3 date-div col-5">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="pick-end-date">To</span>
+								</div>
+								<input type="date" class="form-control" aria-label="pick-end-date-input" aria-describedby="pick-end-date">
+							</div>
+							<div class="col-2">
+								<button type="button" class="btn btn-primary" id="top-search-button"> Search </button> 
+							</div>
+						</div>
+						<div class="container">
+							<ul class="list-group hide">
+								<li class="list-group-item list-group-item-light">
+									1. Aspirin
+								</li>
+								<li class="list-group-item list-group-item-light">
+									2. Adenoscan
+								</li>
+								<li class="list-group-item list-group-item-light">
+									3. Adenosine
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="tab-pane fade" id="patient-drug-detail" role="tabpanel" aria-labelledby="v-pills-home-tab">
+						<div class="row">
+							<div class="col-1"></div>
+							<div class="input-group mb-3 date-div col-10">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="pick-start-date">Date From</span>
+								</div>
+								<input type="date" class="form-control" aria-label="pick-start-date-input" aria-describedby="pick-start-date">
+							</div>
+							<div class="col-1"></div>
+						</div>
+						<div class="row">
+							<div class="col-1"></div>
+							<div class="input-group mb-3 date-div col-10">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="pick-end-date">To</span>
+								</div>
+								<input type="date" class="form-control" aria-label="pick-end-date-input" aria-describedby="pick-end-date">
+							</div>
+							<div class="col-1"></div>
+						</div>
+						<div class="row">
+							<div class="col-1"></div>
+							<div class="input-group mb-3 date-div col-10">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="medication-rela">Medication</span>
+								</div>
+								<input type="text" aria-label="medication-rela-input" aria-describedby="medication-rela" class="form-control col-5" placeholder="Medication One" id="medication-one">
+								<select class="custom-select col-2" id="and-or">
+									<option value="none" selected>...</option>
+									<option value="and">And</option>
+									<option value="or">Or</option>
+								</select>
+								<input type="text" aria-label="medication-rela-input" aria-describedby="medication-rela" class="form-control col-5" placeholder="Medication Two" id="medication-two">
+							</div>
+							<div class="col-1"></div>
+						</div>
+						<div class="row">
+							<div class="col-1"></div>
+							<div class="col-2">
+								<button type="button" class="btn btn-success hide" id="patient-export-button"> Export  </button>
+							</div>
+							<div class="col-8">
+								<button type="button" class="btn btn-primary" id="patient-search-button"> Search </button> 
+								<button type="button" class="btn btn-primary" id="patient-back-button"> Back </button> 
+							</div>
+							<div class="col-1"></div>
+						</div>
+						<ul class="list-group hide">
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-3">
+										<span> <b>Patient Name</b> </span>
+									</div>
+									<div class="col-sm-2">
+										<span> <b>URN</b> </span>
+									</div>
+									<div class="col-sm-2">
+										<span> <b>Dose</b> </span>
+									</div>
+									<div class="col-sm-2">
+										<span> <b>Frequency</b> </span>
+									</div>
+									<div class="col-sm-3">
+										<span> <b>Date</b> </span>
+									</div>
+								</form>
+							</li>
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-3">
+										<span> Peter </span>
+									</div>
+									<div class="col-sm-2">
+										<span> p90932 </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 200 </span>
+									</div>
+									<div class="col-sm-2">
+										<span> QID </span>
+									</div>
+									<div class="col-sm-3">
+										<span> 05/05/2018 </span>
+									</div>
+								</form>
+							</li>
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-3">
+										<span> Jack </span>
+									</div>
+									<div class="col-sm-2">
+										<span> p232 </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 100 </span>
+									</div>
+									<div class="col-sm-2">
+										<span> QID </span>
+									</div>
+									<div class="col-sm-3">
+										<span> 19/03/2018 </span>
+									</div>
+								</form>
+							</li>
+						</ul>	
+					</div>
+
+					<div class="tab-pane fade" id="export-all-data" role="tabpanel" aria-labelledby="v-pills-home-tab">
+						<div class="row">
+							<div class="input-group mb-3 date-div col-5">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="pick-start-date">Date From</span>
+								</div>
+								<input type="date" class="form-control" aria-label="pick-start-date-input" aria-describedby="pick-start-date">
+							</div>
+							<div class="input-group mb-3 date-div col-5">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="pick-end-date">To</span>
+								</div>
+								<input type="date" class="form-control" aria-label="pick-end-date-input" aria-describedby="pick-end-date">
+							</div>
+							<div class="col-2">
+								<button type="button" class="btn btn-primary" id="all-data-search-button"> Search </button> 
+							</div>
+						</div>
+						<div id="all-data-result" class="hide">
+							<ul class="list-group">
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-2">
+										<span> <b>URN</b> </span>
+									</div>
+									<div class="col-sm-1">
+										<span> <b>Patient Name</b> </span>
+									</div>
+									<div class="col-sm-2">
+										<span> <b>Medication</b> </span>
+									</div>
+									<div class="col-sm-2">
+										<span> <b>Dose/Route</b> </span>
+									</div>
+									<div class="col-sm-1">
+										<span> <b>Freq</b> </span>
+									</div>
+									<div class="col-sm-2">
+										<span> <b>ICU Admission Date</b> </span>
+									</div>
+									<div class="col-sm-2">
+										<span> <b>ICU Discharge Date</b> </span>
+									</div>
+								</form>
+							</li>
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-2">
+										<span> p129902 </span>
+									</div>
+									<div class="col-sm-1">
+										<span> Peter </span>
+									</div>
+									<div class="col-sm-2">
+										<span> Aspirin </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 200/Q </span>
+									</div>
+									<div class="col-sm-1">
+										<span> QID </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 02/08/2017 </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 02/10/2017 </span>
+									</div>
+								</form>
+							</li>
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-2">
+										<span> p129232 </span>
+									</div>
+									<div class="col-sm-1">
+										<span> Dola </span>
+									</div>
+									<div class="col-sm-2">
+										<span> Aspirin </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 300/Q </span>
+									</div>
+									<div class="col-sm-1">
+										<span> QID </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 01/03/2018 </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 02/05/2018 </span>
+									</div>
+								</form>
+							</li>
+							<li class="list-group-item list-group-item-light">
+								<form class="form-inline row">
+									<div class="col-sm-2">
+										<span> p902 </span>
+									</div>
+									<div class="col-sm-1">
+										<span> Jack </span>
+									</div>
+									<div class="col-sm-2">
+										<span> Aspirin </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 400/Q </span>
+									</div>
+									<div class="col-sm-1">
+										<span> QID </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 02/09/2017 </span>
+									</div>
+									<div class="col-sm-2">
+										<span> 19/10/2017 </span>
+									</div>
+								</form>
+							</li>
+						</ul>	
+						<div class="row">
+							<div class="col-9"></div>
+							<div class="col-3">
+								<button type="button" class="btn btn-primary" id="all-result-export"> Export </button> 
+								<button type="button" class="btn btn-primary" id="all-result-back-button"> Back </button> 
+							</div>
+						</div>
+						</div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

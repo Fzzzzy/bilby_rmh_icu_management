@@ -1,0 +1,72 @@
+.hide {
+	display: none;
+}
+
+div#research-main-panel {
+	position: fixed;
+	top: 20%;
+	left: 7%; 
+	text-align: center;
+	width: 85%;
+	background-color: #17a2b8!important;
+}
+
+div#research-main-panel .nav-pills a{
+	color: black;
+}
+
+div#research-main-panel .nav-pills a.active{
+	font: bold;
+	color: #FFF;
+}
+
+
+div#research-main-panel .btn-light {
+	width: 260px;
+}
+/*
+div#icu-discharge-drugs, div#icu-discharge-drugs-result {
+	margin: -201px 0 0 -300px; 
+	width: 600px;
+}*/
+div#icu-discharge-drugs .btn-primary, 
+div#icu-discharge-drugs-result .btn-primary {
+	float: right;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+div#icu-discharge-drugs-result #icu-result-export {
+	background-color: #28a745;
+	border-color: #28a745;
+}
+
+div#top-drug-result #top-back-button,
+div#all-data-result #all-result-export,
+div#all-data-result #all-result-back-button {
+	float: right;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+
+#all-result-export {
+	background-color: #28a745;
+	border-color: #28a745;
+}
+
+/*
+div#top-drug-list {
+	margin: -201px 0 0 -350px; 
+	width: 700px;
+}*/
+
+div#patient-drug-detail {
+	text-align: center;
+}
+
+div#patient-drug-detail .btn-primary {
+	float: right;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+

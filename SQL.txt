@@ -1,0 +1,107 @@
+CREATE DATABASE rmh;
+
+USE rmh;
+
+CREATE TABLE rmh.staffs (
+    id INT(10) NOT NULL AUTO_INCREMENT,
+    email VARCHAR(40) NOT NULL,
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
+    password VARCHAR(80) NOT NULL,
+    staffType VARCHAR(10) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE rmh.patients (
+    id INT(10) NOT NULL AUTO_INCREMENT,
+    urn INT(10) NOT NULL,
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
+    dateOfBirth DATE NOT NULL,
+    PRIMARY KEY (id) 
+);
+
+CREATE TABLE rmh.medicines (
+    medicineID INT(10) NOT NULL AUTO_INCREMENT,
+    medicineName VARCHAR(30) NOT NULL,
+    PRIMARY KEY (medicineID) 
+);
+
+CREATE TABLE rmh.admissions (
+    admissionID INT(10) NOT NULL AUTO_INCREMENT,
+    urn INT(10) NOT NULL,
+    dateFrom DATETIME NOT NULL,
+    dateTo DATETIME NOT NULL,
+    PRIMARY KEY (admissionID),
+    FOREIGN KEY (urn) 
+        REFERENCES patients(urn)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE rmh.mmpRecords (
+    mmpRecordID INT(10) NOT NULL AUTO_INCREMENT,
+    admissionID INT(10) NOT NULL,
+    medicineName VARCHAR(30) NOT NULL,
+    dose VARCHAR(20) NOT NULL,
+    route VARCHAR(20) NOT NULL,
+    frequency VARCHAR(20) NOT NULL,
+    PRIMARY KEY (mmpRecordID),
+    FOREIGN KEY (admissionID) 
+        REFERENCES admissions(admissionID)
+        ON DELETE CASCADE   
+);
+
+CREATE TABLE rmh.mcHospitalDischargeRecords (
+    mcHDRecordID INT(10) NOT NULL AUTO_INCREMENT,
+    admissionID INT(10) NOT NULL,
+    date DATETIME NOT NULL,
+    medicineName VARCHAR(30) NOT NULL,
+    dose VARCHAR(20) NOT NULL,
+    route VARCHAR(20) NOT NULL,
+    frequency VARCHAR(20) NOT NULL,
+    PRIMARY KEY (mcHDRecordID),
+    FOREIGN KEY (admissionID) 
+        REFERENCES admissions(admissionID)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE rmh.icuAdmissions   (
+    icuAdmissionID INT(10) NOT NULL AUTO_INCREMENT,
+    admissionID INT(10) NOT NULL,
+    dateFrom DATETIME NOT NULL,
+    dateTo DATETIME NOT NULL,
+    PRIMARY KEY (icuAdmissionID),
+    FOREIGN KEY (admissionID) 
+        REFERENCES admissions(admissionID)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE rmh.mcICU (
+    mcID INT (10) NOT NULL AUTO_INCREMENT,
+    icuAdmissionID INT(10) NOT NULL,
+    dateFrom DATETIME NOT NULL,
+    dateTo DATETIME NOT NULL,
+    type VARCHAR(25) NOT NULL,
+    PRIMARY KEY (mcID),
+    FOREIGN KEY (icuAdmissionID) 
+        REFERENCES icuAdmissions(icuAdmissionID)
+        ON DELETE CASCADE 
+);
+
+CREATE TABLE rmh.mcICURecords (
+    mcICURecordID INT (10) NOT NULL AUTO_INCREMENT,
+    mcID INT (10) NOT NULL,
+    medicineName VARCHAR(30) NOT NULL,
+    dose VARCHAR(20) NOT NULL,
+    route VARCHAR(20) NOT NULL,
+    frequency VARCHAR(20) NOT NULL,
+    date DATETIME NOT NULL,
+    PRIMARY KEY (mcICURecordID),
+    FOREIGN KEY (mcID) 
+        REFERENCES mcICU(mcID)
+        ON DELETE CASCADE  
+);
+
+
+

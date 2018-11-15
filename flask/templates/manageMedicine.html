@@ -1,0 +1,162 @@
+{% extends 'layout.html' %}
+{% block body %}
+<body>
+	<div class="container-fluid">
+		<!--the main list-->
+		<div class="container main-ul">	
+        	
+		        <div>
+            <form class="form-inline" id = "button">
+               <!--search the Username-->
+               <div class="col-sm-8">
+				   <input class="form-control mr-sm-2 btn-sm" type="search" placeholder="Medication" aria-label="Search">
+				   <button class="btn btn-success my-2 my-sm-0 btn-sm" type="submit">Search</button>
+               </div>
+               <!--buttons ADD-->
+               <div>
+
+                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMedicine">ADD</button>
+                   
+               </div>
+
+            </form>
+        </div>
+        <br>
+		<!--table-->
+			<ul class="list-group">
+				<li class="list-group-item list-group-item-light">
+					<div class="row">
+						<div class="col">
+							<span>Medication </span>
+            </div>
+            <div class="col">
+              <span> </span>
+            </div>
+            <div class="col">
+              <span> </span>
+            </div>
+					</div>
+        </li>
+        {% include 'includes/_messages.html' %} 
+        {% if medicines != 'empty'  %}
+        {% for medicine in medicines %}
+				<li class="list-group-item">
+            <div class="row">
+            <div class="col">
+                <span> {{medicine.medicineName}} </span>
+            </div>
+            <div class="col">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit{{medicine.medicineID}}">EDIT</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete{{medicine.medicineID}}">DELETE</button>
+            </div>
+            </div>
+        </li>
+        {% endfor %}
+        {% endif %}
+			</ul>			
+		</div>
+    </div>
+    
+    {% for medicine in medicines %}
+		<div class="modal fade" id="edit{{medicine.medicineID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Edit Medicine Name</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+						{% from "includes/_formhelper.html" import render_field%}
+              <form id="MedicineForm" class="form" action="{{ url_for('editMedicine',medicineID = medicine.medicineID) }}" method="post">                         
+							<!--account-->
+							<div class="form-group row">
+									<label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">Medicine</label>
+										<div class="col-sm-10" >
+											{{render_field(medicineForm.medicineName, class_="form-control", type="text",value=medicine.medicineName)}}
+										</div>
+							</div>		
+							<div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+									<button type="submit" class="btn btn-primary">EDIT</button>
+								</div>
+						</form>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div class="modal fade" id="delete{{medicine.medicineID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Delete?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+              <form id="deleteMedicineForm" class="form" action="{{ url_for('deleteMedicine', medicineID=medicine.medicineID ) }}" method="post">  
+                
+                <button type="submit" class="btn btn-danger">YES</button>
+                
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    <div class="modal fade" id="addMedicine" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                   <div class="modal-content">
+                     <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Add new medication</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  {% from "includes/_formhelper.html" import render_field%}
+                        <form id="addMedicine" class="form" action="{{ url_for('addMedicine') }}" method="post">
+                            
+                            <!--account-->
+                             <div class="form-group row">
+                              <label for="inlineFormInputGroupUsername" class="col-sm-2 col-form-label">Name</label>
+                               <div class="col-sm-10">
+                                  {{render_field(medicineForm.medicineName, class_="form-control", type="text")}}
+                               </div>
+                            </div>
+                            <div class="modal-footer">
+                                <!--  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                          </form>
+                     
+              </div>
+              
+            </div>
+          </div>
+    </div>
+    
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenterdelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Delete?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-primary">Yes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+</body>
+{% endblock %}

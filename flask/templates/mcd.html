@@ -1,0 +1,213 @@
+{% extends 'layout.html' %}
+{% block body %}
+{% include 'includes/_messages.html' %} 
+{% from "includes/_formhelper.html" import render_field %}
+<div class="container shadow p-3 mb-5 bg-info rounded" id="boxes">
+  <h4>Hospital Discharge Medication Chart</h4>
+  <table class="table">
+      <thead>
+          <th colspan="1" scope="col">URN </th>
+          <th colspan="1" scope="col">Admission From </th>  
+          <th colspan="1" scope="col">Admission To </th>
+      </thead>
+      <tbody>
+          <th colspan="1" scope="col">{{session['urn']}}</th>
+          <th colspan="1" scope="col">{{admission.dateFrom}}</th>
+          <th colspan="1" scope="col">{{admission.dateTo}}</th>
+      </tbody>
+  </table>
+<div class="shadow p-3 mb-5 bg-light rounded" id="boxes">
+  <div class="table-responsive" id="m-medicationChart-table">
+    <h4>Records</h4>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Medication Name</th>
+        <th>Dose</th>
+        <th>Route</th>
+        <th>Frequency</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if mcRecords != None %}
+      {% for mcRecord in mcRecords %}
+      <tr>
+        <td>{{mcRecord.date}}</td>
+        <td>{{mcRecord.medicineName}}</td>
+        <td>{{mcRecord.route}}</td>
+        <td>{{mcRecord.dose}}</td>
+        <td>{{mcRecord.frequency}}</td>
+        <td>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editRecord{{mcRecord.mcHDRecordID}}">EDIT</button>
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteRecord{{mcRecord.mcHDRecordID}}">DELETE</button>
+        </td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+    </tbody>
+    </table>
+    <div>
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addRecord">ADD Record</button>
+    </div>
+  </div>
+</div>
+<div>
+    <form id="mcHDForm" class="" action="{{ url_for('showSearchResult', urn=session['urn'])}}" method="post">  
+        <button type="" class="btn btn-secondary btn-lg">BACK</button>  
+     </form>
+  </div>
+</div>
+
+<!--- Modal -->
+{% if mcRecords != None %}
+{% for mcRecord in mcRecords %}
+<div class="modal fade" id="editRecord{{mcRecord.mcHDRecordID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Edit Record</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="addMcform" class="form" action="{{ url_for('editMcdRecord',mcHDRecordID=mcRecord.mcHDRecordID)}}" method="post">
+            
+            <!--Date-->
+            <div class="form-group row">
+              <label for="inlineFormInputGroupDateFrom" class="col-sm-2 col-form-label">Date</label>
+              <div class="col-sm-10">
+                  {{render_field(mcRecordForm.date, class_="form-control", type="datetime-local",value=mcRecord.date)}}
+              </div>
+            </div>
+  
+            <!--Medication Name-->
+            <div class="form-group row">
+              <label for="inlineFormInputGroupMedicationName" class="col-sm-2 col-form-label">Medication Name</label>
+              <div class="col-sm-10">
+                  {{render_field(mcRecordForm.medicineName, class_="form-control", type="text",value=mcRecord.medicineName)}}
+              </div>
+            </div>
+  
+            <!--Route-->
+            <div class="form-group row">
+              <label for="inlineFormInputGroupRoute" class="col-sm-2 col-form-label">Route</label>
+              <div class="col-sm-10">
+                  {{render_field(mcRecordForm.route, class_="form-control", type="text",value=mcRecord.route)}}
+              </div>
+            </div>
+
+            <!--Dose-->
+            <div class="form-group row">
+              <label for="inlineFormInputGroupDose" class="col-sm-2 col-form-label">Dose</label>
+              <div class="col-sm-10">
+                  {{render_field(mcRecordForm.dose, class_="form-control", type="text",value=mcRecord.dose)}}
+              </div>
+            </div>
+  
+            <!--Frequency-->
+            <div class="form-group row">
+              <label for="inlineFormInputGroupFrequency" class="col-sm-2 col-form-label">Frequency</label>
+              <div class="col-sm-10">
+                  {{render_field(mcRecordForm.frequency, class_="form-control", type="text",value=mcRecord.frequency)}}
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <!--  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+          <button type="submit" class="btn btn-primary">EDIT</button>
+        </form>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+<div class="modal fade" id="deleteRecord{{mcRecord.mcHDRecordID}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Delete?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+          <form id="deleteMcRecordForm" class="form" action="{{ url_for('deleteMcdRecord', mcHDRecordID=mcRecord.mcHDRecordID ) }}" method="post">  
+							<button type="submit" class="btn btn-primary">YES</button>
+					</form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{% endif %}
+<div class="modal fade" id="addRecord" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Add Record</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <form id="addMcform" class="form" action="{{ url_for('addMcdRecord')}}" method="post">
+          
+          <!--Date-->
+          <div class="form-group row">
+            <label for="inlineFormInputGroupDateFrom" class="col-sm-2 col-form-label">Date</label>
+            <div class="col-sm-10">
+                {{render_field(mcRecordForm.date, class_="form-control", type="datetime-local")}}
+            </div>
+          </div>
+
+          <!--Medication Name-->
+          <div class="form-group row">
+            <label for="inlineFormInputGroupMedicationName" class="col-sm-2 col-form-label">Medication Name</label>
+            <div class="col-sm-10">
+                {{render_field(mcRecordForm.medicineName, class_="form-control", type="text")}}
+            </div>
+          </div>
+
+          <!--Route-->
+          <div class="form-group row">
+            <label for="inlineFormInputGroupRoute" class="col-sm-2 col-form-label">Route</label>
+            <div class="col-sm-10">
+                {{render_field(mcRecordForm.route, class_="form-control", type="text")}}
+            </div>
+          </div>
+
+          <!--Dose-->
+          <div class="form-group row">
+            <label for="inlineFormInputGroupDose" class="col-sm-2 col-form-label">Dose</label>
+            <div class="col-sm-10">
+                {{render_field(mcRecordForm.dose, class_="form-control", type="text")}}
+            </div>
+          </div>
+
+          <!--Frequency-->
+          <div class="form-group row">
+            <label for="inlineFormInputGroupFrequency" class="col-sm-2 col-form-label">Frequency</label>
+            <div class="col-sm-10">
+                {{render_field(mcRecordForm.frequency, class_="form-control", type="text")}}
+            </div>
+          </div> 
+      </div>
+      <div class="modal-footer">
+        <!--  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+        <button type="submit" class="btn btn-primary">ADD</button>
+      </form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CENCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

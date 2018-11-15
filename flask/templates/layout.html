@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>RMH-ICU e-System</title>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- the link of boostrap css-->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<!--your own css file-->
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/manageAccount.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/manageMedicine.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/research.css')}}">
+    <!--===============================================================================================-->	
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='images/icons/favicon.ico')}}"/>
+
+    <!--===============================================================================================-->
+</head>
+<body>
+    <div class="limiter">
+        <!-- a navbar located on the top -->
+        {% include 'includes/_navBar_.html'%}
+        {% block body %}{% endblock %}
+    </div>
+    <div id="dropDownSelect1"></div>
+
+    <!-- the link of boostrap js-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <!--your own js file-->
+    <script src="static/js/research.js"></script>
+    <!--
+    <script>
+        $('#addAccountForm').click(function(event) {
+            event.preventDefault();
+            $.post(url, data=$('#addAccountForm').serialize(), function(data) {
+                if (data.status == 'ok') {
+                $('#exampleModalCenter').modal('hide');
+                location.reload();
+                }
+                else {
+                $('#exampleModalCenter .modal-content').html(data);
+                }
+            });
+        })
+
+    </script>
+    -->
+</body>
+</html>
+        

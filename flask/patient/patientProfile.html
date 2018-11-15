@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>search</title>
+    
+	<!-- the link of boostrap css-->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+	<!-- the link of boostrap js-->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	
+	<!--your own css file-->
+	<link rel="stylesheet" type="text/css" href="search.css">
+	
+	<script type = "text/javascript">
+	function toggle(id){
+	var tb = document.getElementById(id);
+	if (tb.style.display == 'none') 
+        tb.style.display = 'block';
+    else tb.style.display= 'none';
+	}
+   
+   
+    </script>
+   
+   
+</head>
+<body>
+   
+    <div class="container-fluid">
+		<!-- a navbar located on the top -->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+           
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+				<a class="navbar-brand" href="/">
+					<img src="https://www.thermh.org.au/sites/default/files/favicon.png" width="30" height="30" alt="">
+				</a>
+
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item">
+						<a class="nav-link active" href="#"> Patient Profile <span class="sr-only">(current) </a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#"> Research </a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#"> Manage Medication </span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#"> Manage Account </a>
+					</li>
+				</ul>
+
+				<div class="dropdown" >
+					<a class="btn btn-sm btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Hi, <span> Administrator </span>
+					</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<a class="dropdown-item btn-sm" href="#"> Edit Profile </a>
+						<a class="dropdown-item btn-sm" href="#"> Logout </a>
+					</div>
+				</div>
+			</div>
+		</nav>
+        <div class="container">
+    <br/>
+	<div class="row justify-content-center">
+                        <div class="col-12 col-md-10 col-lg-8">
+                            <form class="card card-sm">
+                                <div class="card-body row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <i class="fas fa-search h4 text-body"></i>
+                                    </div>
+                                    <!--end of col-->
+                                    <div class="col">
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="URN">
+                                    </div>
+                                    <!--end of col-->
+                                    <div class="col-auto">
+                                         <input type="button"  class="btn btn-lg btn-success" value="Search" type ="submit" onClick = "toggle('patienttable')"/>
+                                         
+                                    </div>
+                                    <!--end of col-->
+                                </div>
+                            </form>
+                        </div>
+                        <!--end of col-->
+                    </div>
+                    <!-- Large modal -->
+
+</div>
+   
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Patient</button>
+  <!--the table of patient Admission date-->
+    </div>
+  
+    <div id = "patienttable">
+    <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Admission Date</th>
+      <th  colspan="2">Charts</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>09/02/2016</td>
+      <td colspan="2">
+        
+          <button type="button" class="btn btn-sm btn-info" onclick="window.location.href='mcNoramlAdd.html'"> MMP </button> 
+          <button type="button" class="btn btn-sm btn-info" onclick="window.location.href='mcNoramlAdd.html'"> MC </button> 
+          <button type="button" class="btn btn-sm btn-info"
+          onclick="window.location.href='mcnormal.html'"> MCICU </button>			
+          <button type="button" class="btn btn-sm btn-info"
+          onclick="window.location.href='mcnormal.html'"> MCHospital </button>			
+        </td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>18/04/2017</td>
+      <td  colspan="2">
+        
+          <button type="button" class="btn btn-sm btn-info"  onclick="window.location.href='mmpNoneExport.html'"> MMP </button> 
+          <button type="button" class="btn btn-sm btn-info" onclick="window.location.href='mcnormal.html'"> MC </button> 
+          <button type="button" class="btn btn-sm btn-info" onclick="window.location.href='mcnormal.html'"> MCICU </button>			
+          <button type="button" class="btn btn-sm btn-info" onclick="window.location.href='mcnormal.html'"> MCHospital </button>	
+        </td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>20/09/2018</td>
+      <td colspan="2">
+        
+          <button type="button" class="btn btn-sm btn-info"
+          onclick="window.location.href='mmpNoneExport.html'"> MMP </button> 
+          <button type="button" class="btn btn-sm btn-info" onclick="window.location.href='mcNormal.html'"> MC </button> 
+          <button type="button" class="btn btn-sm btn-info" onclick="window.location.href='mcnormal.html'"> MCICU </button>			
+          <button type="button" class="btn btn-sm btn-info" onclick="window.location.href='mcnormal.html'"> MCHospital </button>	</td>
+      
+    </tr>
+  </tbody>
+</table>
+
+<form class="form-inline">
+  <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Add more admission date:</label>
+  <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+    <option selected>Choose...</option>
+    <option value="1">12/12/2012</option>
+    <option value="2">02/12/2018</option>
+    <option value="3">02/08/2018</option>
+  </select>
+
+  <button type="submit" class="btn btn-primary my-1">Submit</button>
+ 
+</form>
+
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New patient</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-10">
+     <input type="text" class="form-control" id="name" placeholder="Peter">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">URN</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="URN" placeholder="1234">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Date of Birth</label>
+    <div class="col-sm-10">
+      <div class="form-group">
+            <select class="form-control input">
+              <option value="">09/02/2018</option>
+            </select>
+          </div>
+    </div>
+  </div>
+</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
