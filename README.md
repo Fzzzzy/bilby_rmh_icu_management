@@ -25,7 +25,7 @@ MySQL 5.7.23 Community Server
 
 Database Settings:
 1. Create a user "swen90014" on localhost with password"swen90014" (Grant all administrator privileges to this user.)
-2  Create database using SQL commands:    
+2. Create database using SQL commands:    
 
 **You can take use of the SQL.txt (on the root catalogue) to build your local database **
 
@@ -35,4 +35,4 @@ Mysql Shell Connection:   https://dev.mysql.com/doc/mysql-shell-excerpt/5.7/en/m
 # My Task
 1. The main front-end tasks
 2. Integration of all web pages, including style unification and css modification
-2. Testing 
+3. Unit testing & integration testing
